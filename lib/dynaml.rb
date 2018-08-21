@@ -1,7 +1,11 @@
 class Dynaml
-  ELEM_REGEX  = /([\w]*)[\#\.$\z]/i
+  ELEM_REGEX  = /([\w]*)(\#|\.|\z)/i
   ID_REGEX    = /#([\w\-\:]*)/i
   CLASS_REGEX = /\.([\w\-\:]*)/i
+
+  # def initialize(options = {})
+  #   @pretty = options[:pretty] || false
+  # end
 
   def tag(name, content, attributes = {})
     %(<#{name}#{tag_attributes(attributes)}>#{content}</#{name}>)
@@ -10,20 +14,20 @@ class Dynaml
   def parse(content)
     # return content if content.class == ActiveSupport::SafeBuffer
 
-    content.map { |c| parse_part(c) }.flatten.join(" ").html_safe
+    content.map { |c| parse_part(c) }.flatten.join(" ") # .html_safe
   end
 
   def parse_content_string(string)
     string # I18n.interpolate(string).html_safe
   end
 
-  def parse_t(key)
-    parse(t(key))
-  end
-
   def to_tag(key, content)
     attributes = key_attributes(key)
     tag(strip_key(key), content, attributes)
+  end
+
+  def parse_t(key)
+    parse(t(key))
   end
 
   # private

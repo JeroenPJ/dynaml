@@ -1,0 +1,4 @@
+content:
+- p#title: "Dynaml"
+- div:
+  - p.description: "Dynaml adds dynamic features to your YML/locale files"
