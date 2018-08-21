@@ -29,6 +29,7 @@ dynaml = Dynaml.new
 dynaml.parse(YAML.load(open(filename))["content"])
 # or
 dynaml.parse(content)
+```
 
 And get HTML:
 ```html
