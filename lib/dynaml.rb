@@ -3,6 +3,8 @@ class Dynaml
   ID_REGEX    = /#([\w\-\:]*)/i
   CLASS_REGEX = /\.([\w\-\:]*)/i
 
+  INTERP_REGEX = /%{(\w+)}/i
+
   def initialize(options = {})
     @pretty = options[:pretty] || false
 
@@ -19,8 +21,10 @@ class Dynaml
     content.map { |c| parse_part(c) }.flatten.join(@seperator) # .html_safe
   end
 
-  def parse_content_string(string)
-    string # I18n.interpolate(string).html_safe
+  def parse_string(string)
+    interpolations = build_interpolations(string)
+    return string if interpolations.empty?
+    I18n.interpolate(string, interpolations) # .html_safe
   end
 
   def to_tag(key, content)
@@ -33,6 +37,11 @@ class Dynaml
   end
 
   # private
+
+  def build_interpolations(string)
+    method_names = string.scan(INTERP_REGEX).map(&:last)
+    method_names.map { |name| [name.to_sym, send(name)] }.to_h
+  end
 
   def key_attributes(key)
     id = ID_REGEX.match(key)
@@ -54,7 +63,7 @@ class Dynaml
 
   def parse_part(part)
     part.map do |element, content|
-      content = content.is_a?(String) ? parse_content_string(content) : prettify_content(parse(content))
+      content = content.is_a?(String) ? parse_string(content) : prettify(parse(content))
       to_tag(element, content)
     end
   end
@@ -63,7 +72,7 @@ class Dynaml
     attributes.empty? ? "" : " " + attributes.map { |a, v| %(#{a}="#{v}") }.join(" ")
   end
 
-  def prettify_content(content)
+  def prettify(content)
     @pretty ? "\n  #{content}\n" : content
   end
 end

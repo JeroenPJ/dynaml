@@ -1,7 +1,12 @@
 require_relative '../lib/dynaml'
+require 'i18n'
 require 'YAML'
 
-dynaml = Dynaml.new
+def website_link
+  "https://www.lushed.co/dynaml"
+end
+
+dynaml = Dynaml.new(pretty: true)
 yaml = YAML.load(open("test/test.yml"))
 
 hash = [
