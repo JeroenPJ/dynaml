@@ -3,9 +3,11 @@ class Dynaml
   ID_REGEX    = /#([\w\-\:]*)/i
   CLASS_REGEX = /\.([\w\-\:]*)/i
 
-  # def initialize(options = {})
-  #   @pretty = options[:pretty] || false
-  # end
+  def initialize(options = {})
+    @pretty = options[:pretty] || false
+
+    @seperator = @pretty ? "\n" : ""
+  end
 
   def tag(name, content, attributes = {})
     %(<#{name}#{tag_attributes(attributes)}>#{content}</#{name}>)
@@ -14,7 +16,7 @@ class Dynaml
   def parse(content)
     # return content if content.class == ActiveSupport::SafeBuffer
 
-    content.map { |c| parse_part(c) }.flatten.join(" ") # .html_safe
+    content.map { |c| parse_part(c) }.flatten.join(@seperator) # .html_safe
   end
 
   def parse_content_string(string)
@@ -52,12 +54,16 @@ class Dynaml
 
   def parse_part(part)
     part.map do |element, content|
-      content = content.is_a?(String) ? parse_content_string(content) : parse(content)
+      content = content.is_a?(String) ? parse_content_string(content) : prettify_content(parse(content))
       to_tag(element, content)
     end
   end
 
   def tag_attributes(attributes)
     attributes.empty? ? "" : " " + attributes.map { |a, v| %(#{a}="#{v}") }.join(" ")
+  end
+
+  def prettify_content(content)
+    @pretty ? "\n  #{content}\n" : content
   end
 end
