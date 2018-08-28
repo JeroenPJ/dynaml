@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = "Dynaml adds dynamic features to your YML/locale files"
   s.authors     = ["Jeroen Jagt"]
   s.email       = 'jeroenpjagt@gmail.com'
-  s.files       = ["lib/dynaml.rb"]
+  s.files       = ["lib/dynaml.rb", "lib/dynaml/helpers.rb"]
   s.homepage    = 'https://github.com/JeroenPJ/dynaml'
   s.license     = 'MIT'
 end

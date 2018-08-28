@@ -1,5 +1,5 @@
 require_relative '../lib/dynaml'
-require 'i18n'
+# require 'i18n'
 require 'YAML'
 
 def website_link

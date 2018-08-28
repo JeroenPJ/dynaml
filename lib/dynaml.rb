@@ -32,10 +32,6 @@ class Dynaml
     tag(strip_key(key), content, attributes)
   end
 
-  def parse_t(key)
-    parse(t(key))
-  end
-
   # private
 
   def build_interpolations(string)
@@ -76,3 +72,5 @@ class Dynaml
     @pretty ? "\n  #{content}\n" : content
   end
 end
+
+require 'dynaml/helpers'
