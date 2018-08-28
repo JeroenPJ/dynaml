@@ -1,3 +1,5 @@
+require 'i18n'
+
 class Dynaml
   ELEM_REGEX  = /([\w]*)(\#|\.|\z)/i
   ID_REGEX    = /#([\w\-\:]*)/i
